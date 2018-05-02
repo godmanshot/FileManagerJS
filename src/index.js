@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import FileManager from './FileManager';
+
 
 ReactDOM.render(
-  <h1>Hello, world!</h1>,
+  <FileManager/>,
   document.getElementById('root')
 );
