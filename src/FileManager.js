@@ -1,21 +1,27 @@
-﻿import React from 'react';
-import ReactDOM from 'react-dom';
-import FileList from './FileList/FileList';
+import React from 'react';
+import axios from 'axios';
+import FileList from './FileList/index.js';
+import File from './File/File.js';
 
 export default class FileManager extends React.Component {
+
 	constructor(props) {
 		super(props);
-		this.state = {};
-		this.state.currentDirectory = './';
-		this.state.fileList = this.fileList();
+		this.state = {
+			files: []
+		};
+		this.getFiles();
 	}
-	fileList() {
-		if (this.state.currentDirectory == './' || this.state.currentDirectory == undefined)
-			return ['./', 'images', 'files'];
-		if (this.state.currentDirectory == './qwe')
-			return ['./', 'examples', 'code'];
+
+	getFiles() {
+		axios.get('/FileManager/public/api/directory?path=./')
+		.then((response) => this.setState({files: response.data.map((data) => new File(data))}))
+		.catch(function (error) {
+			console.log(error);
+		});
 	}
+
 	render() {
-		return (<div><ul><FileList fileList={this.state.fileList} parent={this} /></ul></div>);
+		return <FileList files={this.state.files}/>;
 	}
 }
